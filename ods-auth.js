@@ -47,7 +47,7 @@ var ODS = (function() {
       var x = $(sessXml);
       var sid = x.find('userSession sid');
       if(sid.length > 0) {
-        return new Session(sid.text(), parseInt(x.find('user new').text()));
+        return new Session(sid.text(), parseInt(x.find('user new').text(), 10));
       }
       else {
         return null;
@@ -68,7 +68,7 @@ var ODS = (function() {
         },
         onlineAccount: {
           service: x.find('onlineAccount service').text(),
-          uid: x.find('onlineAccount uid').text(),
+          uid: x.find('onlineAccount uid').text()
         }
       };
     };
@@ -158,8 +158,8 @@ var ODS = (function() {
         if(odsSSLHost == null) {
           console.log("ODS: Fetching SSL host from ODS instance");
           $.get(odsApiUrl("server.getInfo", 0), {info: "sslPort"}).success(function(result) {
-            if(result["sslHost"]) {
-              odsSSLHost = result["sslHost"] + ":" + result["sslPort"];
+            if(result.sslHost) {
+              odsSSLHost = result.sslHost + ":" + result.sslPort;
               console.log("Fetched SSL Host from ODS: " + odsSSLHost);
               }
             else {
@@ -422,7 +422,7 @@ var ODS = (function() {
      * @private
      */
     var getParameterByName = function(url, name) {
-        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regexS = "[\\?&]" + name + "=([^&#]*)";
         var regex = new RegExp(regexS);
         var results = regex.exec(url.substring(url.indexOf('?')));
@@ -501,7 +501,7 @@ var ODS = (function() {
         authenticationMethods: function(callback) {
             var methods = [];
             $.get(odsApiUrl("server.getInfo", 0), {info: "regData"}).success(function(result) {
-              for(a in result.authenticate) {
+              for(var a in result.authenticate) {
                 if(result.authenticate[a])
                   methods.push(a);
               }
@@ -512,7 +512,7 @@ var ODS = (function() {
         registrationMethods: function(callback) {
             var methods = [];
             $.get(odsApiUrl("server.getInfo", 0), {info: "regData"}).success(function(result) {
-              for(a in result.register) {
+              for(var a in result.register) {
                 if(result.register[a])
                   methods.push(a);
               }
@@ -523,7 +523,7 @@ var ODS = (function() {
         connectionMethods: function(callback) {
             var methods = [];
             $.get(odsApiUrl("server.getInfo", 0), {info: "regData"}).success(function(result) {
-              for(a in result.connect) {
+              for(var a in result.connect) {
                 if(result.connect[a])
                   methods.push(a);
               }
@@ -666,8 +666,6 @@ var ODS = (function() {
             // check if the session is still valid by fetching user details
             $.get(odsApiUrl("user.info"), { realm: "wa", sid: sessionId }).success(function(result) {
                 var name = $(result).find("name").text();
-                var fullName = $(result).find("fullName").text();
-                var photo = $(result).find("photo").text();
                 if(name == null || name == "") {
                     sessionId = null;
                     errorHandler("Session timed out: " + sessionId);
@@ -800,7 +798,7 @@ var ODS = (function() {
         registerOrLoginViaThirdPartyService: function(type, url, confirm, errorHandler) {
           $.get(odsApiUrl("user.authenticate.authenticationUrl", 0), { action: "auto", service: type, "confirm": confirm || 'auto', "callback": url }, "text/plain").success(function(result) {
             window.location.href = result;
-          }).error(error || defaultErrorHandler);
+          }).error(errorHandler || defaultErrorHandler);
         },
 
         /**
@@ -1002,5 +1000,5 @@ var ODS = (function() {
         setDefaultErrorHandler: function(handler) {
           defaultErrorHandler = handler;
         }
-    }
+    };
 })();
