@@ -894,7 +894,8 @@ var ODS = (function() {
           var cid = getParameterByName(window.location.href, 'confirmSession.cid');
           var err = getParameterByName(window.location.href, 'error.msg');
           if(sid.length > 0) {
-            newSessionHandler(new Session(sid));
+            ODS.createSessionFromId(sid, newSessionHandler, errorHandler);
+            return true;
           }
           else if(cid.length > 0) {
             confirmHandler({
