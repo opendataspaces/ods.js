@@ -1000,6 +1000,44 @@ var ODS = (function() {
          */
         setDefaultErrorHandler: function(handler) {
           defaultErrorHandler = handler;
+        },
+
+        /**
+         * Removes any parameters ODS.js added to an URL.
+         */
+        clearUrl: function(url) {
+          if(url.indexOf('?') >= 0) {
+            // extract params
+            var params = url.substring(url.indexOf('?')+1).split('&');
+            var newUrl = url.substring(0, url.indexOf('?'));
+            var first = true;
+            for (var i = 0; i < params.length; i++) {
+              if(params[i].length > 0) {
+                var key = params[i].split("=")[0];
+                if (key.substring(0, 6) == "error." ||
+                  key.substring(0, 12) == "userSession." ||
+                  key.substring(0, 15) == "confirmSession." ||
+                  key.substring(0, 5) == "user." ||
+                  key.substring(0, 14) == "onlineAccount.") {
+                    continue;
+                }
+                else {
+                  if (first) {
+                    newUrl += '?';
+                    first = false;
+                  }
+                  else {
+                    newUrl += '&';
+                  }
+                  newUrl += params[i];
+                }
+              }
+            }
+            return newUrl;
+          }
+          else {
+            return url;
+          }
         }
     };
 })();
