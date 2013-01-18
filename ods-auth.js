@@ -479,7 +479,12 @@ var ODS = (function() {
          * @param path The absolute path to the DAV resource.
          */
         davUrl: function(path) {
-          return "http://" + odsHost + "/DAV" + path;
+          var url = "http://" + odsHost;
+          if(path.substring(0, 4) != '/DAV')
+            url += "/DAV";
+          if(path.substring(0, 1) != "/")
+            url += "/";
+          return url + path;
         },
 
         /**
