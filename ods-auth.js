@@ -1005,7 +1005,7 @@ var ODS = (function() {
         /**
          * Removes any parameters ODS.js added to an URL.
          */
-        clearUrl: function(url) {
+        cleanupUrl: function(url) {
           if(url.indexOf('?') >= 0) {
             // extract params
             var params = url.substring(url.indexOf('?')+1).split('&');
