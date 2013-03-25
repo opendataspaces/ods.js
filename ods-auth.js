@@ -541,6 +541,20 @@ var ODS = (function() {
         },
 
         /**
+         * Create a new ODS session from a session ID without any checks.
+         *
+         * This method should only be used from php or vsp code when it is sure that the given
+         * session id is valid. In all other cases ODS#createSessionFromId is the correct choice.
+         *
+         * @param {String} sid The session ID to create the Session object from.
+         *
+         * @return A new (@link ODS.Session} object which can be used right away.
+         */
+        newSessionFromVerifiedId: function(sid) {
+          return new Session(sid);
+        },
+
+        /**
          * Create a new ODS session with password hash authentication.
          *
          * @param {String} usr The user name.
