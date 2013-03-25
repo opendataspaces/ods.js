@@ -111,10 +111,10 @@ var ODS = (function() {
           navigator.id.logout();
 
           // build the audience address as required by Mozilla Persona
-          var audience = window.location.protocol + "//" + window.location.hostname + ":" + (window.location.port || (window.location.protocol == "http:" ? "80" : "443"));
+          var audience = window.location.protocol + "//" + window.location.hostname + ":" + (window.location.port || (window.location.protocol === "http:" ? "80" : "443"));
 
           // connect requires authentication...
-          if(s_browserIdAction == "connect") {
+          if(s_browserIdAction === "connect") {
             s_browserIdOdsSession.apiCall("user.authenticate.browserid", { action: "connect", "audience": audience, "assertion": assertion }).success(function() {
               s_browseridSuccessHandler(s_browserIdOdsSession);
             }).error(s_browseridErrorHandler);
@@ -197,7 +197,7 @@ var ODS = (function() {
      */
     var odsApiUrl = function(methodName, ssl) {
       if(ssl != 1)
-        ssl = (window.location.protocol == "https:") ? 1 : 0;
+        ssl = (window.location.protocol === "https:") ? 1 : 0;
 
       if(ssl == 1 && odsSSLHost != null) {
         return "https://" + odsSSLHost + "/ods/api/" + methodName;
@@ -837,10 +837,8 @@ var ODS = (function() {
 
           $.get(odsApiUrl("user.authenticate.webid", 1), { action: "auto", "confirm": confirm }).success(function(result) {
             var s = parseOdsSession(result);
-            console.log(s);
             if(!s) {
               // confirm session
-              console.log("Not a session!");
               confirmHandler(parseOdsAuthConfirmSession(result));
             }
             else {
