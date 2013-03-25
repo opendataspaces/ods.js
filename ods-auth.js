@@ -69,6 +69,10 @@ var ODS = (function() {
         onlineAccount: {
           service: x.find('onlineAccount service').text(),
           uid: x.find('onlineAccount uid').text()
+        },
+        reason: {
+          code: x.find('reason code').text(),
+          msg: x.find('reason msg').text()
         }
       };
     };
@@ -912,6 +916,10 @@ var ODS = (function() {
               "onlineAccount": {
                 "service": getParameterByName(window.location.href, "onlineAccount.service"),
                 "uid": getParameterByName(window.location.href, "onlineAccount.uid")
+              },
+              "reason": {
+                "code": getParameterByName(window.location.href, "confirmSession.reason.code"),
+                "msg": getParameterByName(window.location.href, "confirmSession.reason.msg")
               }
             });
             return true;
