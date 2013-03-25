@@ -903,8 +903,7 @@ var ODS = (function() {
           var cid = getParameterByName(window.location.href, 'confirmSession.cid');
           var err = getParameterByName(window.location.href, 'error.msg');
           if(sid.length > 0) {
-            ODS.createSessionFromId(sid, newSessionHandler, errorHandler);
-            return true;
+            newSessionHandler(new Session(sid));
           }
           else if(cid.length > 0) {
             confirmHandler({
