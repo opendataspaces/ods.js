@@ -1,5 +1,5 @@
 /**
- * The Openlink Data Spaces client lib.
+ * The Openlink Data Spaces client lib version 1.0.
  *
  * The central object is the {@link ODS.Session} which can be created through one
  * of the session creation functions provided by ODS.
@@ -541,6 +541,20 @@ var ODS = (function() {
         },
 
         /**
+         * Create a new ODS session from a session ID without any checks.
+         *
+         * This method should only be used from php or vsp code when it is sure that the given
+         * session id is valid. In all other cases ODS#createSessionFromId is the correct choice.
+         *
+         * @param {String} sid The session ID to create the Session object from.
+         *
+         * @return A new (@link ODS.Session} object which can be used right away.
+         */
+        newSessionFromVerifiedId: function(sid) {
+          return new Session(sid);
+        },
+
+        /**
          * Create a new ODS session with password hash authentication.
          *
          * @param {String} usr The user name.
@@ -988,7 +1002,7 @@ var ODS = (function() {
          * <p>Set the host the ODS instance is running on.</p>
          *
          * <p>By default the client's host address is assumed and the
-         * SSL host is determined by calling ODS' <em>server.getInfo</em>.</p>
+         * SSL host is determined by calling ODS' <em>getDefaultHttps</em>.</p>
          *
          * <p>This method can be used to override the defaults and avoid
          * the additional HTTP call mentioned above. It is recommended to set
@@ -998,6 +1012,10 @@ var ODS = (function() {
         setOdsHost: function(host, sslHost) {
           odsHost = host;
           odsSSLHost = sslHost;
+          if(odsHost.substring(0,7) == "http://")
+            odsHost = odsHost.substring(7);
+          if(odsSSLHost.substring(0,8) == "https://")
+            odsSSLHost = odsSSLHost.substring(8);
         },
 
         /**
