@@ -1002,7 +1002,7 @@ var ODS = (function() {
          * <p>Set the host the ODS instance is running on.</p>
          *
          * <p>By default the client's host address is assumed and the
-         * SSL host is determined by calling ODS' <em>server.getInfo</em>.</p>
+         * SSL host is determined by calling ODS' <em>getDefaultHttps</em>.</p>
          *
          * <p>This method can be used to override the defaults and avoid
          * the additional HTTP call mentioned above. It is recommended to set
@@ -1012,6 +1012,10 @@ var ODS = (function() {
         setOdsHost: function(host, sslHost) {
           odsHost = host;
           odsSSLHost = sslHost;
+          if(odsHost.substring(0,7) == "http://")
+            odsHost = odsHost.substring(7);
+          if(odsSSLHost.substring(0,8) == "https://")
+            odsSSLHost = odsSSLHost.substring(8);
         },
 
         /**
