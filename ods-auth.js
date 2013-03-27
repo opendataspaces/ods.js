@@ -1,5 +1,5 @@
 /**
- * The Openlink Data Spaces client lib.
+ * The Openlink Data Spaces client lib version 1.0.
  *
  * The central object is the {@link ODS.Session} which can be created through one
  * of the session creation functions provided by ODS.
