@@ -7,7 +7,7 @@
  * @namespace
  * @name ODS
  */
-var ODS = (function() {
+var ODS = (function($) {
 
     /// The ODS instance host (private vars)
     // TODO: add a way to change this without having the SSL host being fetched twice!
@@ -1068,4 +1068,4 @@ var ODS = (function() {
           }
         }
     };
-})();
+})(jQuery);
